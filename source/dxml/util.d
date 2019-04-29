@@ -909,7 +909,7 @@ string stripIndent(R)(R range)
         if(firstLine.length > 1)
             put(retval, firstLine);
 
-        outer: while(true)
+        while(true)
         {
             auto start = text.save;
             text = text.find('\n');
@@ -924,17 +924,17 @@ string stripIndent(R)(R range)
             foreach(_; 0 .. indent)
             {
                 if(text.empty)
-                    goto isEmpty;
+                    break;
                 if(notHWhite(text.front))
-                    goto notEmpty;
+                    break;
                 text.popFront();
             }
             if(text.empty)
             {
-                isEmpty: put(retval, line[0 .. $ - 1]);
+                put(retval, line[0 .. $ - 1]);
                 return retval.data;
             }
-            notEmpty: put(retval, line);
+            put(retval, line);
         }
         // The compiler is not smart enough to realize that this line is unreachable.
         assert(0);
